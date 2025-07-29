@@ -8,10 +8,14 @@ services:
     ports:
       - "6080:6080"  # noVNC web interface
       - "5901:5901"  # VNC direct access
+      - "5554:5554"  # ADB console port
+      - "5555:5555"  # ADB connection port
     devices:
       - /dev/kvm:/dev/kvm
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     environment:
       - DISPLAY=:1
+    networks:
+      - default
     restart: unless-stopped
