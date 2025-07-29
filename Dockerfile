@@ -30,11 +30,13 @@ RUN apt-get update && apt-get install -y \
     cpu-checker \
     pulseaudio \
     socat \
+    x11-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Install noVNC for web-based VNC access
 RUN git clone https://github.com/novnc/noVNC.git /opt/novnc && \
-    git clone https://github.com/novnc/websockify /opt/novnc/utils/websockify
+    git clone https://github.com/novnc/websockify /opt/novnc/utils/websockify && \
+    chmod +x /opt/novnc/utils/novnc_proxy
 
 # Create android user
 RUN useradd -m -s /bin/bash android && \
