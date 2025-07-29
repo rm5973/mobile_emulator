@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  android-emulator:
+    build: .
+    container_name: android-emulator
+    privileged: true
+    ports:
+      - "6080:6080"  # noVNC web interface
+      - "5901:5901"  # VNC direct access
+    devices:
+      - /dev/kvm:/dev/kvm
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    environment:
+      - DISPLAY=:1
+    restart: unless-stopped
