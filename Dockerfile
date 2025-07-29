@@ -31,12 +31,14 @@ RUN apt-get update && apt-get install -y \
     pulseaudio \
     socat \
     x11-utils \
+    netcat \
     && rm -rf /var/lib/apt/lists/*
 
 # Install noVNC for web-based VNC access
 RUN git clone https://github.com/novnc/noVNC.git /opt/novnc && \
     git clone https://github.com/novnc/websockify /opt/novnc/utils/websockify && \
-    chmod +x /opt/novnc/utils/novnc_proxy
+    chmod +x /opt/novnc/utils/novnc_proxy && \
+    ln -s /opt/novnc/vnc.html /opt/novnc/index.html
 
 # Create android user
 RUN useradd -m -s /bin/bash android && \
@@ -90,9 +92,10 @@ RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY start-vnc.sh /usr/local/bin/start-vnc.sh
 COPY start-emulator.sh /usr/local/bin/start-emulator.sh
+COPY start-novnc.sh /usr/local/bin/start-novnc.sh
 
 # Make scripts executable
-RUN chmod +x /usr/local/bin/start-vnc.sh /usr/local/bin/start-emulator.sh
+RUN chmod +x /usr/local/bin/start-vnc.sh /usr/local/bin/start-emulator.sh /usr/local/bin/start-novnc.sh
 
 # Expose VNC and noVNC ports
 EXPOSE 5901 6080
